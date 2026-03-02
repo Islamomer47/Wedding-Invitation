@@ -64,7 +64,7 @@ export default function App() {
         ref={audioRef}
         loop
         preload="auto"
-        src="/assets/harumachimusic-palace-garden-386499.mp3"
+        src="https://res.cloudinary.com/dfqpf2szg/video/upload/v1772412638/harumachimusic-palace-garden-386499_aus7gm.mp3"
       />
 
       {!opened && (
