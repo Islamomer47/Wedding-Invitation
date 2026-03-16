@@ -142,7 +142,7 @@ export const translations: Record<Lang, Translations> = {
     footerThanks: "Thank you for honoring us with your presence",
     footerWish:
       "May this night be woven into the fabric of your most beautiful memories. We are deeply grateful for having you with us.",
-    footerNames: "Islam & Basil",
+    footerNames: "Basil & Islam",
     footerDate: "29 · 07 · 2026",
     muteBtn: "Mute",
     unmuteBtn: "Sound",
@@ -222,7 +222,7 @@ export const translations: Record<Lang, Translations> = {
     footerThanks: "شكراً لتشريفنا بحضوركم",
     footerWish:
       "نتمنى أن تبقى هذه الليلة منسوجةً في أجمل ذكرياتكم. نحن ممتنون من أعماق قلوبنا لوجودكم معنا.",
-    footerNames: "اسلام & باسل",
+    footerNames: "باسل & اسلام",
     footerDate: "٢٩ · ٠٧ · ٢٠٢٦",
     muteBtn: "كتم",
     unmuteBtn: "صوت",

@@ -27,7 +27,7 @@ export default function EnvelopeLetter({ tr, lang, setLang, onOpen }: Props) {
   const handlePosterClick = () => {
     if (phase !== "poster") return;
     setPhase("playing");
-    // Small delay so the video element is visible before play()
+
     setTimeout(() => {
       videoRef.current?.play().catch(() => {});
     }, 80);
@@ -111,7 +111,7 @@ export default function EnvelopeLetter({ tr, lang, setLang, onOpen }: Props) {
         <div
           style={{
             position: "absolute",
-            bottom: 52,
+            bottom: 70,
             left: "50%",
             transform: "translateX(-50%)",
             display: "flex",
@@ -119,17 +119,37 @@ export default function EnvelopeLetter({ tr, lang, setLang, onOpen }: Props) {
             alignItems: "center",
             gap: 14,
             animation: "hintPulse 2.4s ease-in-out infinite",
+
+            color: "#865118",
+            fontSize: "22px",
+            textAlign: "center",
+            fontWeight: 600,
+
+            fontFamily:
+              lang === "ar" ? "'Amiri', serif" : "'Playfair Display', serif",
+
+            letterSpacing: "0.5px",
+            lineHeight: "1.6",
+
+            textShadow: "0 3px 15px rgba(0,0,0,0.35)",
           }}
-        ></div>
+        >
+          <span>
+            {lang === "en"
+              ? "اضغط لفتح المغلف ومشاهدة دعوة الزفاف"
+              : "Tap to open the envelope and view the wedding invitation"}
+          </span>
+        </div>
       )}
 
       <style>{`
         @keyframes hintPulse {
           0%, 100% { opacity: 0.8; transform: translateX(-50%) translateY(0); }
-          50%       { opacity: 1;   transform: translateX(-50%) translateY(-5px); }
+          50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
         }
+
         @keyframes ripple {
-          0%   { transform: scale(1);   opacity: 1; }
+          0% { transform: scale(1); opacity: 1; }
           100% { transform: scale(1.5); opacity: 0; }
         }
       `}</style>

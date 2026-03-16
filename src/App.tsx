@@ -26,7 +26,7 @@ export default function App() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const tr = translations[lang];
-
+  const [showScrollTop, setShowScrollTop] = useState(false);
   useEffect(() => {
     document.documentElement.dir = tr.dir;
     document.documentElement.lang = lang;
@@ -58,6 +58,18 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <div style={{ overflowX: "hidden" }}>
       <audio
@@ -97,6 +109,42 @@ export default function App() {
           <Footer tr={tr} lang={lang} />
           <MusicPlayer tr={tr} muted={muted} onToggle={handleToggleMute} />
         </>
+      )}
+
+      {showScrollTop && (
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          style={{
+            position: "fixed",
+            bottom: 28,
+            left: 28,
+            width: 46,
+            height: 46,
+            borderRadius: "50%",
+            border: "1px solid rgba(201,162,77,0.6)",
+            background: "rgba(0,0,0,0.55)",
+            color: "#C9A24D",
+            fontSize: 20,
+            cursor: "pointer",
+            zIndex: 999,
+            backdropFilter: "blur(6px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.3s",
+            boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.background = "#C9A24D";
+            e.currentTarget.style.color = "#fff";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.background = "rgba(0,0,0,0.55)";
+            e.currentTarget.style.color = "#C9A24D";
+          }}
+        >
+          ↑
+        </button>
       )}
     </div>
   );

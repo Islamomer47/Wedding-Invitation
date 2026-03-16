@@ -27,6 +27,20 @@ export default function Hero({
   const videoRef = useRef<HTMLVideoElement>(null);
   const isAr = lang === "ar";
 
+  const [showScrollHint, setShowScrollHint] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 30) {
+        setShowScrollHint(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 100);
     return () => clearTimeout(timer);
@@ -395,46 +409,28 @@ export default function Hero({
         </div>
 
         {/* ── SCROLL CUE ── */}
-        <button
-          onClick={() =>
-            document
-              .getElementById("countdown")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
-          style={{
-            position: "absolute",
-            bottom: 22,
-            left: "20%",
-            transform: "translateX(-50%)",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            zIndex: 3,
-            animation: "fadeUp 1s ease 1.8s both",
-          }}
-          aria-label="Scroll"
-        >
-          <div
-            className="hl-scroll"
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {/* Text */}
-            <div className="hl-scroll-text">
-              <span>SCROLL</span>
-              <span className="ar">اسحب للأسفل</span>
+        {showScrollHint && (
+          <>
+            {/* LEFT HINT */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: 32,
+                left: 40,
+                zIndex: 5,
+                color: "#2e2815",
+                fontFamily: "'Amiri', serif",
+                fontWeight: 700,
+                fontSize: 16,
+                letterSpacing: 1,
+                textShadow: "0 4px 20px rgba(0,0,0,0.45)",
+                animation: "float 2.5s ease-in-out infinite",
+              }}
+            >
+              اسحب للأسفل ↓
             </div>
-
-            {/* Arrow */}
-            <div className="hl-scroll-arrow">↓</div>
-
-            {/* Line */}
-            <div className="hl-scroll-line" />
-          </div>
-        </button>
+          </>
+        )}
 
         {/* ── MUTE BUTTON ── */}
         {onToggleMute && (
