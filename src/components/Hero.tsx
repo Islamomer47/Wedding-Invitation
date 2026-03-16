@@ -415,7 +415,7 @@ export default function Hero({
             <div
               style={{
                 position: "absolute",
-                bottom: 32,
+                bottom: 70,
                 left: 40,
                 zIndex: 5,
                 color: "#2e2815",
