@@ -127,7 +127,7 @@ export default function Hero({
           font-family: 'Great Vibes', cursive;
           font-size: clamp(76px, 18vw, 152px);
           color: #fff;
-          top: 5%
+          top: 5%;
           line-height: 1.02;
           text-shadow: 0 6px 48px rgba(0,0,0,0.35), 0 2px 10px rgba(0,0,0,0.18);
           letter-spacing: 2px;

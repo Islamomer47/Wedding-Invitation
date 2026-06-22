@@ -29,7 +29,10 @@ export default function EnvelopeLetter({ tr, lang, setLang, onOpen }: Props) {
     setPhase("playing");
 
     setTimeout(() => {
-      videoRef.current?.play().catch(() => {});
+      videoRef.current?.play().catch((err) => {
+        console.error("VIDEO ERROR", err);
+        onOpen();
+      });
     }, 80);
   };
 

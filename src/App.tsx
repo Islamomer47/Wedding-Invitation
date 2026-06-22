@@ -2,7 +2,6 @@
 // App.tsx
 // ─────────────────────────────────────────────────────────────────
 import React, { useState, useRef, useEffect } from "react";
-import "./styles/globals.css";
 
 import { translations } from "./data/translations";
 import type { Lang } from "./data/translations";
