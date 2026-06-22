@@ -54,6 +54,8 @@ export interface Translations {
   menuTitle: string;
   menuTagline: string;
   menuItems: { icon: string; title: string; desc: string }[];
+  // Our Story
+  storyItems: { icon: string; year?: string; title: string; desc: string }[];
   // Gallery
   galleryTitle: string;
   galleryTagline: string;
@@ -136,6 +138,38 @@ export const translations: Record<Lang, Translations> = {
         desc: "A memorable gift from Ibrahim Al-Qurashi for every dear guest",
       },
     ],
+    storyItems: [
+      {
+        icon: "💻",
+        year: "Where it began",
+        title: "How We Met",
+        desc: "A training program brought us together — two people who shared a love for programming and learning. That's where Basil first saw the girl of his dreams, and quietly decided he would do whatever it took to win her heart.",
+      },
+      {
+        icon: "🌱",
+        year: "Building something real",
+        title: "Working Side by Side",
+        desc: "Fate gave us a second chance to be close — the same company, the same days. Basil worked tirelessly to build himself from the ground up, all while holding on to one dream: to one day ask for her hand.",
+      },
+      {
+        icon: "💍",
+        year: "The proposal",
+        title: "He Asked, and She Said Yes",
+        desc: "By God's grace, that hard work bore fruit. When Basil finally asked, she said yes — with love, and with pride in everything he had become for her. Her family blessed their union with open hearts.",
+      },
+      {
+        icon: "🌙",
+        year: "24 October",
+        title: "Our Engagement Night",
+        desc: "The most beautiful beginning of our lives — a night of pride, love, and gratitude. Basil remembers his quiet prayers in the last hours before dawn, on a night when prayers are answered.",
+      },
+      {
+        icon: "👰🏻‍♀️🤵🏼‍♂️",
+        year: "29 July 2026",
+        title: "Our Forever Begins",
+        desc: "Now we step into marriage to crown this love — a home built on love, peace, and closeness to God. We ask Him to bless what comes next. Please keep us in your prayers, and wish us beautiful days ahead.",
+      },
+    ],
     galleryTitle: "Gallery",
     galleryTagline: "Moments we cherish forever",
     footerTagline: "Harir Palace  ·  29 July 2026",
@@ -214,6 +248,38 @@ export const translations: Record<Lang, Translations> = {
         icon: "🎁",
         title: "هدايا عطور فاخرة",
         desc: "هدية تذكارية من ابراهيم القرشي لكل ضيف عزيز",
+      },
+    ],
+    storyItems: [
+      {
+        icon: "💻",
+        year: "البداية",
+        title: "كيف تعارفنا",
+        desc: "جمعنا برنامج تدريبي، وكان شغفنا المشترك بالبرمجة والتعلّم هو ما قرّبنا. هناك رأى باسل فتاة أحلامه، وقرر في قلبه أن يفعل المستحيل ليكسب قلبها.",
+      },
+      {
+        icon: "🌱",
+        year: "بناء المستقبل",
+        title: "معاً في رحلة العمل",
+        desc: "جمعنا القدر مرة أخرى للعمل في نفس الشركة. كان باسل يعمل بلا كلل ليبني نفسه من الصفر، وفي قلبه حلم واحد: أن يتقدّم يوماً لخطبة من يحب.",
+      },
+      {
+        icon: "💍",
+        year: "لحظة الخطوبة",
+        title: "طلب يدها فقالت نعم",
+        desc: "وبفضل الله، تحقق ما سعى إليه. تقدّم باسل لخطبتها، فقالت نعم بكل حب وفخر بما أصبح من أجلها. وباركت أسرتها هذا الارتباط بقلوب مفتوحة.",
+      },
+      {
+        icon: "🌙",
+        year: "٢٤ أكتوبر",
+        title: "ليلة خطوبتنا",
+        desc: "كانت أجمل بداية لحياتنا — ليلة فخر وحب وامتنان. يتذكر باسل دعواته في ساعات السحر، في ليلة تُستجاب فيها الدعوات.",
+      },
+      {
+        icon: "👰🏻‍♀️🤵🏼‍♂️",
+        year: "٢٩ يوليو ٢٠٢٦",
+        title: "بداية الأبد",
+        desc: "والآن نخطو إلى الزواج لنُتمّم هذا الحب — في بيت يجمعه الحب والسكينة والقرب من الله. نسأله أن يبارك ما هو آتٍ. فلا تنسونا من دعائكم، ونسألكم دعوة بأيام جميلة.",
       },
     ],
     galleryTitle: "معرض الصور",

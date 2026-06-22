@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────────
 // Gallery.tsx  –  Masonry photo gallery with lightbox
 // ─────────────────────────────────────────────────────────────────
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useInView } from "../hooks/hooks";
 import { GALLERY_IMAGES } from "../data/translations";
 import type { Translations, Lang } from "../data/translations";
@@ -14,24 +14,47 @@ interface Props {
 export default function Gallery({ tr, lang }: Props) {
   const [headRef, headVis] = useInView();
   const [gridRef, gridVis] = useInView();
-  const [lightbox, setLightbox] = useState<string | null>(null);
-  const [lightboxIdx, setLightboxIdx] = useState(0);
 
-  const openLightbox = (src: string, idx: number) => {
-    setLightbox(src);
+  // 🔧 FIX: lightboxIdx is now the single source of truth.
+  // The previous version stored both `lightbox` (a src string) and
+  // `lightboxIdx` (a number) as two separate pieces of state that had to be
+  // kept in sync by hand on every navigation. Any update that touched one
+  // without the other (or where the two setState calls landed across
+  // different renders) could leave them pointing at different images —
+  // which is what produced the "snap back to the first image" symptom.
+  // Deriving the displayed src from the index on every render makes that
+  // class of bug impossible.
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+  const isOpen = lightboxIdx !== null;
+  const currentSrc = isOpen ? GALLERY_IMAGES[lightboxIdx] : null;
+
+  const openLightbox = useCallback((idx: number) => {
     setLightboxIdx(idx);
-  };
-  const closeLightbox = () => setLightbox(null);
-  const prevImg = () => {
-    const i = (lightboxIdx - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
-    setLightboxIdx(i);
-    setLightbox(GALLERY_IMAGES[i]);
-  };
-  const nextImg = () => {
-    const i = (lightboxIdx + 1) % GALLERY_IMAGES.length;
-    setLightboxIdx(i);
-    setLightbox(GALLERY_IMAGES[i]);
-  };
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightboxIdx(null);
+  }, []);
+
+  // 🔧 FIX: use the functional setState form so each click always advances
+  // from the *latest* index, even if two clicks land in quick succession
+  // (e.g. a fast double-tap on mobile, or a click handler firing twice).
+  // The previous version read `lightboxIdx` from the render's closure, so
+  // two rapid clicks could both compute their new index from the same
+  // stale value and the navigation would appear to "stick" or jump.
+  const prevImg = useCallback(() => {
+    setLightboxIdx((current) => {
+      if (current === null) return current;
+      return (current - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+    });
+  }, []);
+
+  const nextImg = useCallback(() => {
+    setLightboxIdx((current) => {
+      if (current === null) return current;
+      return (current + 1) % GALLERY_IMAGES.length;
+    });
+  }, []);
 
   // Staggered masonry layout offsets
   const offsets = [0, 40, -20, 30, -30, 20, 0, -40];
@@ -134,7 +157,6 @@ export default function Gallery({ tr, lang }: Props) {
           </div>
 
           {/* Masonry grid */}
-          {/* Masonry grid */}
           <div
             ref={gridRef as React.RefObject<HTMLDivElement>}
             style={{
@@ -147,7 +169,7 @@ export default function Gallery({ tr, lang }: Props) {
             {GALLERY_IMAGES.map((src, i) => (
               <div
                 key={i}
-                onClick={() => openLightbox(src, i)}
+                onClick={() => openLightbox(i)}
                 style={{
                   marginTop: offsets[i] ?? 0,
                   overflow: "hidden",
@@ -235,7 +257,7 @@ export default function Gallery({ tr, lang }: Props) {
       </section>
 
       {/* ── Lightbox ── */}
-      {lightbox && (
+      {isOpen && currentSrc && (
         <div
           onClick={closeLightbox}
           style={{
@@ -251,7 +273,10 @@ export default function Gallery({ tr, lang }: Props) {
         >
           {/* Close */}
           <button
-            onClick={closeLightbox}
+            onClick={(e) => {
+              e.stopPropagation();
+              closeLightbox();
+            }}
             style={{
               position: "absolute",
               top: 24,
@@ -268,6 +293,7 @@ export default function Gallery({ tr, lang }: Props) {
               alignItems: "center",
               justifyContent: "center",
               transition: "all 0.3s",
+              zIndex: 901,
             }}
             onMouseOver={(e) => {
               e.currentTarget.style.background = "#C9A24D";
@@ -304,6 +330,13 @@ export default function Gallery({ tr, lang }: Props) {
               alignItems: "center",
               justifyContent: "center",
               transition: "all 0.3s",
+              zIndex: 901,
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(201,162,77,0.25)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "rgba(201,162,77,0.1)";
             }}
           >
             ‹
@@ -311,7 +344,13 @@ export default function Gallery({ tr, lang }: Props) {
 
           {/* Image */}
           <img
-            src={lightbox}
+            // 🔧 FIX: key the image by index so React treats each navigation
+            // as a distinct element instead of mutating the same <img>'s src
+            // mid-flight, which previously could race with the browser still
+            // loading the prior image and made navigation feel like it
+            // "stuck" or reverted.
+            key={lightboxIdx}
+            src={currentSrc}
             alt="lightbox"
             onClick={(e) => e.stopPropagation()}
             style={{
@@ -346,6 +385,13 @@ export default function Gallery({ tr, lang }: Props) {
               alignItems: "center",
               justifyContent: "center",
               transition: "all 0.3s",
+              zIndex: 901,
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.background = "rgba(201,162,77,0.25)";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.background = "rgba(201,162,77,0.1)";
             }}
           >
             ›
@@ -364,7 +410,7 @@ export default function Gallery({ tr, lang }: Props) {
               color: "rgba(201,162,77,0.6)",
             }}
           >
-            {String(lightboxIdx + 1).padStart(2, "0")} /{" "}
+            {String(lightboxIdx! + 1).padStart(2, "0")} /{" "}
             {String(GALLERY_IMAGES.length).padStart(2, "0")}
           </p>
         </div>
