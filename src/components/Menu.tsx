@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────
-// Menu.tsx  –  Our Story timeline (formerly the evening menu timeline)
+// Menu.tsx  –  A Letter From Us (formerly the "Our Story" timeline)
 // ─────────────────────────────────────────────────────────────────
 import type { Translations, Lang } from "../data/translations";
 import FadeIn from "./FadeIn";
@@ -39,7 +39,7 @@ export default function Menu({ tr, lang }: Props) {
           whiteSpace: "nowrap",
         }}
       >
-        STORY
+        LETTER
       </div>
 
       <div style={{ maxWidth: 680, margin: "0 auto", position: "relative" }}>
@@ -64,184 +64,173 @@ export default function Menu({ tr, lang }: Props) {
           <GoldDivider width={260} />
         </FadeIn>
 
-        {/* Timeline */}
-        <div style={{ position: "relative" }}>
-          {/* Timeline vertical line */}
+        {/* The letter */}
+        <FadeIn delay={0.15}>
           <div
             style={{
-              position: "absolute",
-              top: 0,
-              bottom: 0,
-              [isAr ? "right" : "left"]: "50%",
-              width: 1,
-              background:
-                "linear-gradient(to bottom, transparent, #C9A24D 10%, #C9A24D 90%, transparent)",
-              opacity: 0.3,
+              position: "relative",
+              background: "rgba(255,255,255,0.75)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(201,162,77,0.25)",
+              padding: "56px 48px",
+              boxShadow: "0 20px 60px rgba(201,162,77,0.12)",
             }}
-          />
+          >
+            {/* Corner accents, all four corners */}
+            <div
+              style={{
+                position: "absolute",
+                top: 10,
+                left: 10,
+                width: 18,
+                height: 18,
+                borderTop: "1px solid rgba(201,162,77,0.45)",
+                borderLeft: "1px solid rgba(201,162,77,0.45)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+                width: 18,
+                height: 18,
+                borderTop: "1px solid rgba(201,162,77,0.45)",
+                borderRight: "1px solid rgba(201,162,77,0.45)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 10,
+                left: 10,
+                width: 18,
+                height: 18,
+                borderBottom: "1px solid rgba(201,162,77,0.45)",
+                borderLeft: "1px solid rgba(201,162,77,0.45)",
+              }}
+            />
+            <div
+              style={{
+                position: "absolute",
+                bottom: 10,
+                right: 10,
+                width: 18,
+                height: 18,
+                borderBottom: "1px solid rgba(201,162,77,0.45)",
+                borderRight: "1px solid rgba(201,162,77,0.45)",
+              }}
+            />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {tr.storyItems.map((item, i) => {
-              const isLeft = i % 2 === 0;
-              return (
-                <FadeIn
-                  key={i}
-                  delay={i * 0.1}
-                  direction={isLeft ? "right" : "left"}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: isLeft ? "flex-end" : "flex-start",
-                      [isAr
-                        ? isLeft
-                          ? "paddingLeft"
-                          : "paddingRight"
-                        : isLeft
-                          ? "paddingRight"
-                          : "paddingLeft"]: "calc(50% + 28px)",
-                      marginBottom: 32,
-                      position: "relative",
-                    }}
-                  >
-                    {/* Timeline node */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 24,
-                        [isAr ? "right" : "left"]: "calc(50% - 12px)",
-                        width: 24,
-                        height: 24,
-                        borderRadius: "50%",
-                        background: "linear-gradient(135deg, #C9A24D, #A87820)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontSize: 12,
-                        boxShadow:
-                          "0 0 0 4px #F0E6D2, 0 0 0 5px rgba(201,162,77,0.3)",
-                        zIndex: 2,
-                      }}
-                    >
+            {/* Opening quotation mark ornament */}
+            <div
+              style={{
+                fontFamily: "'Great Vibes', cursive",
+                fontSize: 64,
+                color: "#C9A24D",
+                opacity: 0.5,
+                lineHeight: 1,
+                marginBottom: -8,
+                textAlign: isAr ? "right" : "left",
+              }}
+              aria-hidden="true"
+            >
+              “
+            </div>
+
+            {/* Letter body, built from the story items as flowing paragraphs */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 22,
+                textAlign: isAr ? "right" : "left",
+                direction: isAr ? "rtl" : "ltr",
+              }}
+            >
+              {tr.storyItems.map((item, i) => (
+                <FadeIn key={i} delay={0.1 + i * 0.08}>
+                  <p style={{ margin: 0 }}>
+                    {item.year && (
                       <span
                         style={{
                           fontFamily: "'Cinzel', serif",
-                          fontSize: 9,
-                          color: "#fff",
-                          fontWeight: 700,
+                          fontSize: 10,
+                          letterSpacing: 2,
+                          color: "#C9A24D",
+                          textTransform: "uppercase",
+                          marginInlineEnd: 10,
                         }}
                       >
-                        {i + 1}
+                        {item.icon} {item.year}
                       </span>
-                    </div>
-
-                    {/* Card */}
-                    <div
+                    )}
+                    <span
                       style={{
-                        background: "rgba(255,255,255,0.75)",
-                        backdropFilter: "blur(12px)",
-                        border: "1px solid rgba(201,162,77,0.25)",
-                        padding: "24px 28px",
-                        position: "relative",
-                        maxWidth: 280,
-                        transition:
-                          "transform 0.3s, box-shadow 0.3s, border-color 0.3s",
-                        cursor: "default",
-                      }}
-                      onMouseOver={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "translateY(-4px)";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow =
-                          "0 20px 60px rgba(201,162,77,0.15)";
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(201,162,77,0.55)";
-                      }}
-                      onMouseOut={(e) => {
-                        (e.currentTarget as HTMLDivElement).style.transform =
-                          "";
-                        (e.currentTarget as HTMLDivElement).style.boxShadow =
-                          "";
-                        (e.currentTarget as HTMLDivElement).style.borderColor =
-                          "rgba(201,162,77,0.25)";
+                        fontFamily: "'Cinzel', serif",
+                        fontSize: 11,
+                        letterSpacing: 2,
+                        color: "#2C1A0E",
+                        textTransform: "uppercase",
+                        marginInlineEnd: 10,
                       }}
                     >
-                      {/* Corner accent */}
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: 8,
-                          [isAr
-                            ? isLeft
-                              ? "left"
-                              : "right"
-                            : isLeft
-                              ? "right"
-                              : "left"]: 8,
-                          width: 12,
-                          height: 12,
-                          borderTop: "1px solid rgba(201,162,77,0.4)",
-                          [isAr
-                            ? isLeft
-                              ? "borderLeft"
-                              : "borderRight"
-                            : isLeft
-                              ? "borderRight"
-                              : "borderLeft"]: "1px solid rgba(201,162,77,0.4)",
-                        }}
-                      />
-
-                      <div style={{ fontSize: 28, marginBottom: 10 }}>
-                        {item.icon}
-                      </div>
-
-                      {/* Year / date label */}
-                      {item.year && (
-                        <div
-                          style={{
-                            fontFamily: "'Cinzel', serif",
-                            fontSize: 10,
-                            letterSpacing: 2,
-                            color: "#C9A24D",
-                            textTransform: "uppercase",
-                            marginBottom: 4,
-                          }}
-                        >
-                          {item.year}
-                        </div>
-                      )}
-
-                      <div
-                        style={{
-                          fontFamily: "'Cinzel', serif",
-                          fontSize: 11,
-                          letterSpacing: 3,
-                          color: "#2C1A0E",
-                          textTransform: "uppercase",
-                          marginBottom: 8,
-                        }}
-                      >
-                        {item.title}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: isAr
-                            ? "'Cairo', sans-serif"
-                            : "'Cormorant Garamond', serif",
-                          fontSize: 13,
-                          color: "#7a5a40",
-                          fontStyle: isAr ? "normal" : "italic",
-                          lineHeight: 1.7,
-                        }}
-                      >
-                        {item.desc}
-                      </div>
-                    </div>
-                  </div>
+                      {item.title}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: isAr
+                          ? "'Cairo', sans-serif"
+                          : "'Cormorant Garamond', serif",
+                        fontSize: 19,
+                        color: "#5a4230",
+                        fontStyle: isAr ? "normal" : "italic",
+                        lineHeight: 1.9,
+                      }}
+                    >
+                      {item.desc}
+                    </span>
+                  </p>
                 </FadeIn>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Signature */}
+            <FadeIn delay={0.2 + tr.storyItems.length * 0.08}>
+              <div
+                style={{
+                  marginTop: 40,
+                  textAlign: isAr ? "left" : "right",
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: isAr
+                      ? "'Cairo', sans-serif"
+                      : "'Cormorant Garamond', serif",
+                    fontSize: 15,
+                    color: "#7a5a40",
+                    fontStyle: isAr ? "normal" : "italic",
+                    marginBottom: 6,
+                  }}
+                >
+                  {isAr ? "بكل الحب،" : "With all our love,"}
+                </div>
+                <div
+                  style={{
+                    fontFamily: isAr
+                      ? "'Amiri', serif"
+                      : "'Great Vibes', cursive",
+                    fontSize: "clamp(30px, 5vw, 42px)",
+                    color: "#2C1A0E",
+                  }}
+                >
+                  {tr.ourMomentsSub}
+                </div>
+              </div>
+            </FadeIn>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Bottom ornament */}
         <FadeIn delay={0.5}>
@@ -250,17 +239,6 @@ export default function Menu({ tr, lang }: Props) {
           </div>
         </FadeIn>
       </div>
-
-      {/* Responsive: stack on mobile */}
-      <style>{`
-        @media (max-width: 600px) {
-          #menu .menu-timeline-item {
-            padding-left: 48px !important;
-            padding-right: 0 !important;
-            justify-content: flex-start !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
