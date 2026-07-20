@@ -95,7 +95,7 @@ function FloorRibbon({ label, capsFont }: { label: string; capsFont: string }) {
         display: "inline-block",
         maxWidth: "100%",
         marginBottom: 22,
-        filter: "drop-shadow(0 10px 16px rgba(44,26,14,0.28))",
+        filter: "none",
       }}
     >
       <div
